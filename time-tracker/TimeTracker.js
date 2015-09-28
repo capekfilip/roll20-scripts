@@ -116,7 +116,7 @@
 				+'<div style="padding-left:10px;">'
 		            +'<b><span style="font-family: serif;">!time <i>-setformat</i> timeformat</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
-			            +'<p>Set the current time.</p>'
+			            +'<p>Set the show time format.</p>'
 			            +'This command requires 1 parameter:'
 			            +'<ul>'
 			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
@@ -164,7 +164,7 @@
 	};
 	
 	/**
-	* First time entry
+	* Set the current ingame time
 	*/
 	var doInitTime = function(args) {
 		if (!args) 
@@ -305,10 +305,15 @@
 	 * Show current ingame time
 	 */
 	var doShowTime = function() {
-		var disp = 'The current time is : '+state.timetracker.hours+':'+state.timetracker.minutes;
+		var time = state.timetracker.hours+':'+state.timetracker.minutes;
+		var disp = '<span style="text-align: center;">The current time is</span>'
+			+'<br><span style="text-align: center; font-weight: bold; font-size: 150%">'+state.timetracker.hours+':'+state.timetracker.minutes+'</span>';
 		
 		if (state.timetracker.timeformat == 12) {
-			var dispConverted = timeConvert(disp);
+			var timeConverted = timeConvert(time);
+			var dispConverted = '<span style="text-align: center;">The current time is</span>'
+			+'<br><span style="text-align: center; font-weight: bold; font-size: 150%">'+timeConverted+'</span>';
+			
 			sendPublic(dispConverted);
 		} else {
 			sendPublic(disp);
