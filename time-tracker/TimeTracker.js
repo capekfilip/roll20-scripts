@@ -287,7 +287,7 @@
 	 * Show current ingame time
 	 */
 	var doShowTime = function() {
-		var disp = 'The current time is : 'state.timetracker.hours+':'+state.timetracker.minutes;
+		var disp = 'The current time is : '+state.timetracker.hours+':'+state.timetracker.minutes;
 		
 		if (state.timetracker.timeformat == 12) {
 			var dispConverted = timeConvert(disp);
