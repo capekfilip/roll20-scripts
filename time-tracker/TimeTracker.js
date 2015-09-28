@@ -287,7 +287,7 @@
 	 * Show current ingame time
 	 */
 	var doShowTime = function() {
-		var disp = state.timetracker.hours+':'+state.timetracker.minutes;
+		var disp = 'The current time is : 'state.timetracker.hours+':'+state.timetracker.minutes;
 		
 		if (state.timetracker.timeformat == 12) {
 			var dispConverted = timeConvert(disp);
@@ -300,7 +300,7 @@
 	/**
 	* Write to log if its ready
 	*/
-	var checkInstall = function() {
+	var loadMessage = function() {
 		log('-=> TimeTracker v'+version+' is ready! Show format is set to '+state.timetracker.timeformat+'-hours time. <=-');
 	}; 
 	
@@ -314,7 +314,7 @@
 	return {
 		init: init,
 		registerAPI: registerAPI,
-		checkInstall: checkInstall
+		loadMessage: loadMessage
 	};
 	 
  }());
@@ -323,5 +323,5 @@ on("ready", function() {
 	'use strict'; 
 	TimeTracker.init(); 
 	TimeTracker.registerAPI();
-	TimeTracker.checkInstall();
+	TimeTracker.loadMessage();
 });
