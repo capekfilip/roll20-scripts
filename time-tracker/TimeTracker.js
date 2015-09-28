@@ -2,14 +2,14 @@
  * TimeTracker.js
  *
  * @author Filip Čapek - capekfilip@capekfilip.cz
- * @version 0.2
+ * @version 0.3
  * @date September 28, 2015
  * @date updated September 28, 2015
  */
  
  var TimeTracker = (function() {
 	'use strict'; 
-	var version = 0.2,
+	var version = 0.3,
 	author = 'Filip Č.';
 	
 	var fields = {
@@ -21,14 +21,20 @@
 		archive: false,
 	};
 	
+	var design = {
+		delete_icon: 'https://s3.amazonaws.com/files.d20.io/images/11381509/YcG-o2Q1-CrwKD_nXh5yAA/thumb.png?1439051579'
+	};
+	
 	/**
 	 * Init
 	 */
 	var init = function() {
-		if (!state.timetracker)
-			{state.timetracker = {};}
+		if (!state.timetracker.time)
+			{state.timetracker.time = {};}
 		if (!state.timetracker.timeformat)
 			{state.timetracker.timeformat = 24;}
+		if (!state.timetracker.events)
+			{state.timetracker.events = {};}
 	};
 	
 	/**
@@ -78,12 +84,20 @@
 			} else if (args.indexOf('-setformat') === 0) {
 				args = args.replace('-setformat','').trim();
 				doSetFormat(args);
-			} else if (args.indexOf('-init') === 0) {
-				args = args.replace('-init','').trim();
-				doInitTime(args);
+			} else if (args.indexOf('-set') === 0) {
+				args = args.replace('-set','').trim();
+				doSetTime(args);
 			} else if (args.indexOf('-plus') === 0) {
 				args = args.replace('-plus','').trim();
 				doPlusTime(args);
+			} else if (args.indexOf('-addevent') === 0) {
+				args = args.replace('-addevent','').trim();
+				doAddEvent(args);
+			} else if (args.indexOf('-events') === 0) {
+				doDisplayEvents(); 	
+			} else if (args.indexOf('-removeevent') === 0) {
+				args = args.replace('-removeevent','').trim();
+				doRemoveEvent(args);
 			} else if (args.indexOf('-show') === 0) {
 				doShowTime();   
 			} else {
@@ -127,37 +141,61 @@
 	            +'</div>'
 	            
 	            +'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-init</i> time</span></b>'
+		            +'<b><span style="font-family: serif;">!time <i>-set</i> hours:minutes</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 			            +'<p>Set the current time.</p>'
-			            +'This command requires 1 parameter:'
+			            +'This command requires 2 parameters:'
 			            +'<ul>'
 			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">time</span></b> -- The numeric value of time in hours and minitues. <b>Must be in 24-hours time format.</b> Example <b>10:30</b>.'
+			            +'<b><span style="font-family: serif;">hours:minutes</span></b> -- The numeric value of time. <b>Must be in 24-hours time format.</b> Example <b>10:30</b>.'
 			            +'</li> '
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
 	            
 	            +'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-plus</i> time</span></b>'
+		            +'<b><span style="font-family: serif;">!time <i>-plus</i> hours:minutes</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 			            +'<p>Add hours and minutes to current time.</p>'
-			            +'This command requires 1 parameter:'
+			            +'This command requires 2 parameters:'
 			            +'<ul>'
 			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">time</span></b> -- The numeric value of time in hours and minitues. Example <b>1:23</b>.'
+			            +'<b><span style="font-family: serif;">hours:minutes</span></b> -- The numeric value of time. Example <b>1:23</b>.'
 			            +'</li> '
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
-	            
+	            	            
 	            +'<div style="padding-left:10px;">'
 		            +'<b><span style="font-family: serif;">!time <i>-show</i></span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 		            	+'<p>This command displays the current time.</p>'
 		            +'</div>'
 				+'</div>'
+				
+				+'<div style="padding-left:10px;">'
+		            +'<b><span style="font-family: serif;">!time <i>-addevent</i> name:hours:minutes</span></b>'
+		            +'<div style="padding-left: 10px;padding-right:20px">'
+			            +'<p>Add hours and minutes to current time.</p>'
+			            +'This command requires 3 parameters:'
+			            +'<ul>'
+			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
+			            +'<b><span style="font-family: serif;">name</span></b> -- string of the event name. Example <b>PC Mage Armor</b>.'
+			            +'</li> '
+			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
+			            +'<b><span style="font-family: serif;">hours:minutes</span></b> -- The numeric value of time, how long the event will last. Example <b>8:00</b>.'
+			            +'</li> '
+			            +'</ul>'
+		            +'</div>'
+	            +'</div>'
+	            
+	            +'<div style="padding-left:10px;">'
+		            +'<b><span style="font-family: serif;">!time <i>-events</i></span></b>'
+		            +'<div style="padding-left: 10px;padding-right:20px">'
+		            	+'<p>This command displays the current events.</p>'
+		            +'</div>'
+				+'</div>'
+				
    			+'</div>'; 
 
 		sendFeedback(content); 
@@ -166,7 +204,7 @@
 	/**
 	 * Set the current ingame time
 	 */
-	var doInitTime = function(args) {
+	var doSetTime = function(args) {
 		if (!args) 
 			{return;}
 
@@ -198,7 +236,7 @@
 			minutes: minutes
 		};
 		
-		state.timetracker = newTime;
+		state.timetracker.time = newTime;
 		
 		var content = 'Time has been set.';
 		
@@ -227,12 +265,11 @@
 			doShowTime();
 			return;
 		} else {
-			var oldTotalSeconds = (state.timetracker.hours * 3600) + (state.timetracker.minutes * 60);
+			var oldTotalSeconds = (state.timetracker.time.hours * 3600) + (state.timetracker.time.minutes * 60);
 			var newTotalSeconds = (hours * 3600) + (minutes * 60);
 			
 			var newTimeSeconds = oldTotalSeconds + newTotalSeconds;
 			
-			var newDays = Math.floor(newTimeSeconds / 86400);
 			var newHours = Math.floor((newTimeSeconds % 86400) / 3600);
 			var newMinutes = Math.floor(((newTimeSeconds % 86400) % 3600) / 60);
 			
@@ -249,12 +286,13 @@
 				minutes: newMinutes
 			};
 			
-			state.timetracker = newTime;
+			state.timetracker.time = newTime;
 			
 			var content = 'Time has been updated.';
 			
 			sendFeedback(content);
-			doShowTime();	
+			doShowTime();
+			checkEventsTimeLeft(newTotalSeconds);	
 		}
 	};
 	
@@ -305,7 +343,7 @@
 	 * Show current ingame time
 	 */
 	var doShowTime = function() {
-		var time = state.timetracker.hours+':'+state.timetracker.minutes;
+		var time = state.timetracker.time.hours+':'+state.timetracker.time.minutes;
 		var disp = '<span style="text-align: center;">The current time is</span>'
 			+'<br><span style="text-align: center; font-weight: bold; font-size: 150%">'+time+'</span>';
 		
@@ -318,7 +356,176 @@
 		} else {
 			sendPublic(disp);
 		}
-	}; 
+	};
+	
+	/**
+	 * Add event to tracker
+	 */
+	var doAddEvent = function(args) {
+		if (!args) 
+			{return;}
+
+		args = args.split(/:| %% /);
+
+		if (args.length < 3 || args.length > 4) {
+			sendError('Invalid event syntax');
+			return;
+		}
+
+		var name = args[0],
+			durHours = parseInt(args[1]),
+			durMinutes = parseInt(args[2]);
+
+		if (typeof(name) === 'string')
+			{name = name.toLowerCase();}
+
+		if (isNaN(durHours) || isNaN(durMinutes)) {
+			sendError('Invalid event syntax');
+			return;
+		}
+
+		if (eventExists(name)) {
+			sendError('Event with the name "'+name+'" already exists');
+			return; 
+		}
+
+		var newEvent = {
+			name: name,
+			durHours: durHours,
+			durMinutes: durMinutes 
+		};
+
+		state.timetracker.events[name] = newEvent;
+		
+		var content = 'Event ' + '<span style="color: green;">'+name+'</span> was added.';
+		
+		sendFeedback(content);
+	};
+	
+	/**
+	 * Check if a event exists
+	 */
+	var eventExists = function(statusName) {
+		statusName = statusName.toLowerCase(); 
+		var found = _.find(_.keys(state.timetracker.events), function(e) {
+			return e === statusName; 
+		});
+		if (found)
+			{found = state.timetracker.events[found]; }
+		return found; 
+	};
+	
+	/**
+	 * Build a listing of events
+	 * 
+	 */
+	var makeEventsConfig = function() {
+		var midcontent = '',
+			content = '';
+
+		_.each(state.timetracker.events,function(e) {
+			if (e.durHours < 10) {
+				var leftHours = '0'+e.durHours;
+			} else {
+				var leftHours = e.durHours;
+			}
+			
+			if (e.durMinutes < 10) {
+				var leftMinutes = '0'+e.durMinutes;
+			} else {
+				var leftMinutes = e.durMinutes;
+			}	
+			
+			midcontent += 
+				'<tr>'
+					+'<td>'
+						+leftHours+':'+leftMinutes
+					+'</td>'
+					+'<td>'
+						+e.name
+					+'</td>'
+					+'<td width="32px" height="32px">' 
+						+'<a style="height: 16px; width: 16px; background: none;" title="Remove '+e.name+' status" href="!time -removeevent '+e.name
+							+'"><img src="'+design.delete_icon+'"></img></a>' 
+					+ '</td>'
+				+'</tr>'; 
+		});
+
+		if ('' === midcontent)
+			{midcontent = 'No Events Available';}
+
+		content = '<div style="background-color: #FFF; border: 1px solid #000; text-align: center;">'
+			+ '<div style="font-weight: bold; font-size: 125%; border-bottom: 1px solid black;">'
+				+ 'Events'
+			+ '</div>'
+			+ '<table width="100%">'; 
+		content += midcontent; 
+		content += '</table></div>'; 
+
+		return content; 
+	};
+	
+	/**
+	 * Display events configuration
+	 */ 
+	var doDisplayEvents = function() {
+		var content = makeEventsConfig(); 
+		sendFeedback(content); 
+	};
+	
+	/**
+	 * Remove event from the tracker
+	 */
+	var doRemoveEvent = function(args) {
+		if (!args) 
+			{return;}
+
+		args = args.split(/:| %% /);
+
+		if (args.length < 1 || args.length > 2) {
+			sendError('Invalid event syntax');
+			return;
+		}
+
+		var name = args[0];
+
+		if (typeof(name) === 'string')
+			{name = name.toLowerCase();}
+
+
+		if (!eventExists(name)) {
+			sendFeedback('Status "' + name + '" is not on the event list');
+			return; 
+		}
+
+		var content = 'Event ' + '<span style="color: red;">'+name+'</span> removed from event list.'; 
+
+		delete state.timetracker.events[name]; 
+		sendFeedback(content); 
+	};  
+	
+	var checkEventsTimeLeft = function(plusTotalSeconds) {
+		_.each(state.timetracker.events,function(e) {
+			var durTotalSeconds = (e.durHours * 3600) + (e.durMinutes * 60);
+			
+			var leftTimeSeconds = durTotalSeconds - plusTotalSeconds;
+			
+			if (leftTimeSeconds <= 0) {
+				var content = '<span style="color: red;">'+e.name+'</span> went off.';
+				sendFeedback(content);
+				doRemoveEvent(e.name);
+				doDisplayEvents();
+			} else {
+				var newHours = Math.floor(leftTimeSeconds / 3600);
+				var newMinutes = Math.floor((leftTimeSeconds % 3600) / 60);
+				
+				e.durHours = newHours;
+				e.durMinutes = newMinutes;
+				
+				doDisplayEvents();
+			}	
+		});
+	}
 	
 	/**
 	 * Write to log if its ready
