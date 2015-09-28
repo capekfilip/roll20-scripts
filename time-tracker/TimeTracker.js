@@ -2,14 +2,14 @@
  * TimeTracker.js
  *
  * @author Filip Čapek - capekfilip@capekfilip.cz
- * @version 0.1
+ * @version 0.2
  * @date September 28, 2015
  * @date updated September 28, 2015
  */
  
  var TimeTracker = (function() {
 	'use strict'; 
-	var version = 0.1,
+	var version = 0.2,
 	author = 'Filip Č.';
 	
 	var fields = {
@@ -27,7 +27,16 @@
 	var init = function() {
 		if (!state.timetracker)
 			{state.timetracker = {};}
+		if (!state.timetracker.timeformat)
+			{state.timetracker.timeformat = 24;}
 	};
+	
+	/**
+	 * Send an error
+	 */ 
+	var sendError = function(msg) {
+		sendFeedback('<span style="color: red; font-weight: bold;">'+msg+'</span>'); 
+	}; 
 	
 	/**
 	* Send feedback message
@@ -66,10 +75,13 @@
 			args = args.replace('!time','').trim();
 			if (args.indexOf('-help') === 0) {
 				showHelp(); 
+			} else if (args.indexOf('-setformat') === 0) {
+				args = args.replace('-setformat','').trim();
+				doSetFormat(args);
 			} else if (args.indexOf('-init') === 0) {
 				args = args.replace('-init','').trim();
 				doInitTime(args);
-			}else if (args.indexOf('-plus') === 0) {
+			} else if (args.indexOf('-plus') === 0) {
 				args = args.replace('-plus','').trim();
 				doPlusTime(args);
 			} else if (args.indexOf('-show') === 0) {
@@ -100,18 +112,33 @@
 		            	+'<p>This command displays the help.</p>'
 		            +'</div>'
 				+'</div>'
+				
 				+'<div style="padding-left:10px;">'
+		            +'<b><span style="font-family: serif;">!time <i>-setformat</i> timeformat</span></b>'
+		            +'<div style="padding-left: 10px;padding-right:20px">'
+			            +'<p>Set the current time.</p>'
+			            +'This command requires 1 parameter:'
+			            +'<ul>'
+			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
+			            +'<b><span style="font-family: serif;">timeformat</span></b> -- The numeric value of time format. <b>Parametr must be only 12 or 24.</b> Default value is 24. Example <b>12</b>.'
+			            +'</li> '
+			            +'</ul>'
+		            +'</div>'
+	            +'</div>'
+	            
+	            +'<div style="padding-left:10px;">'
 		            +'<b><span style="font-family: serif;">!time <i>-init</i> time</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 			            +'<p>Set the current time.</p>'
 			            +'This command requires 1 parameter:'
 			            +'<ul>'
 			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">time</span></b> -- The numeric value of time in hours and minitues. Example <b>10:30</b>.'
+			            +'<b><span style="font-family: serif;">time</span></b> -- The numeric value of time in hours and minitues. <b>Must be in 24-hours time format.</b> Example <b>10:30</b>.'
 			            +'</li> '
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
+	            
 	            +'<div style="padding-left:10px;">'
 		            +'<b><span style="font-family: serif;">!time <i>-plus</i> time</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
@@ -119,11 +146,12 @@
 			            +'This command requires 1 parameter:'
 			            +'<ul>'
 			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">time</span></b> -- The numeric value of time in hours and minitues. Example <b>10:30</b>.'
+			            +'<b><span style="font-family: serif;">time</span></b> -- The numeric value of time in hours and minitues. Example <b>1:23</b>.'
 			            +'</li> '
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
+	            
 	            +'<div style="padding-left:10px;">'
 		            +'<b><span style="font-family: serif;">!time <i>-show</i></span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
@@ -145,7 +173,7 @@
 		args = args.split(/:| %% /);
 
 		if (args.length < 1 || args.length > 3) {
-			sendError('Invalid time syntax');
+			sendError('Invalid time syntax.');
 			return;
 		}
 
@@ -175,7 +203,7 @@
 		args = args.split(/:| %% /);
 
 		if (args.length < 1 || args.length > 3) {
-			sendError('Invalid time syntax');
+			sendError('Invalid time syntax.');
 			return;
 		}
 
@@ -206,10 +234,53 @@
 		
 		state.timetracker = newTime;
 		
-		var content = 'Time has been updated.'
+		var content = 'Time has been updated.';
 		
 		sendFeedback(content);
 		doShowTime();
+	};
+	
+	/**
+	 * Convert time to 12-hours
+	 */
+	 var timeConvert = function(time) {
+		// Check correct time format and split into components
+		time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+		
+		if (time.length > 1) { // If time format correct
+			time = time.slice (1);  // Remove full string match value
+			time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+			time[0] = +time[0] % 12 || 12; // Adjust hours
+		}
+		return time.join (''); // return adjusted time or original string
+	 };
+	 
+	/**
+	 * Set show time format
+	 */
+	var doSetFormat = function(args) {
+		if (!args) 
+			{return;}
+
+		args = args.split(/:| %% /);
+
+		if (args.length < 1 || args.length > 2) {
+			sendError('Invalid time format syntax.');
+			return;
+		}
+		
+		var timeformat = parseInt(args[0]);
+		
+		if (timeformat != 24 && timeformat != 12) {
+			sendError('Invalid time format syntax.');
+			return;
+		}
+		
+		state.timetracker.timeformat = timeformat;
+		
+		var content = 'Show format has been set to '+timeformat+'-hours time.';
+		
+		sendFeedback(content);
 	};
 	
 	/**
@@ -217,14 +288,20 @@
 	 */
 	var doShowTime = function() {
 		var disp = state.timetracker.hours+':'+state.timetracker.minutes;
-		sendPublic(disp);
+		
+		if (state.timetracker.timeformat == 12) {
+			var dispConverted = timeConvert(disp);
+			sendPublic(dispConverted);
+		} else {
+			sendPublic(disp);
+		}
 	}; 
 	
 	/**
 	* Write to log if its ready
 	*/
 	var checkInstall = function() {
-		log('-=> TimeTracker v'+version+' is ready! <=-');
+		log('-=> TimeTracker v'+version+' is ready! Show format is set to '+state.timetracker.timeformat+'-hours time. <=-');
 	}; 
 	
 	 /**
