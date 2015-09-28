@@ -189,7 +189,15 @@
 		
 		var newDays = Math.floor(newTimeSeconds / 86400);
 		var newHours = Math.floor((newTimeSeconds % 86400) / 3600);
-		var newMinutes = Math.floor(((newTimeSeconds % 86400) % 3600) / 60);	
+		var newMinutes = Math.floor(((newTimeSeconds % 86400) % 3600) / 60);
+		
+		if (newHours < 10) {
+			var newHours = '0'+newHours;
+		}
+		
+		if (newMinutes < 10) {
+			var newMinutes = '0'+newMinutes;
+		}	
 					
 		var newTime = {
 			hours: newHours,
