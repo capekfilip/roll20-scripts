@@ -14,7 +14,7 @@
 	
 	var fields = {
 		feedbackName: 'TimeTracker',
-		// feedbackImg: 'https://s3.amazonaws.com/files.d20.io/images/11514664/jfQMTRqrT75QfmaD98BQMQ/thumb.png?1439491849',
+		feedbackImg: 'https://raw.githubusercontent.com/capekfilip/roll20-scripts/master/time-tracker/thumb.png',
 	};
 	
 	var flags = {
@@ -43,9 +43,9 @@
 	*/
 	var sendFeedback = function(msg) {
 		var content = '/w GM '
-				// + '<div style="position: absolute; top: 4px; left: 5px; width: 26px;">'
-				// 	+ '<img src="' + fields.feedbackImg + '">' 
-				// + '</div>'
+				+ '<div style="position: absolute; top: 4px; left: 5px; width: 26px;">'
+					+ '<img src="' + fields.feedbackImg + '">' 
+				+ '</div>'
 				+ msg;
 			
 		sendChat(fields.feedbackName,content,null,(flags.archive ? {noarchive:true}:null));
