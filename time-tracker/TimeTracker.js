@@ -307,7 +307,7 @@
 	var doShowTime = function() {
 		var time = state.timetracker.hours+':'+state.timetracker.minutes;
 		var disp = '<span style="text-align: center;">The current time is</span>'
-			+'<br><span style="text-align: center; font-weight: bold; font-size: 150%">'+state.timetracker.hours+':'+state.timetracker.minutes+'</span>';
+			+'<br><span style="text-align: center; font-weight: bold; font-size: 150%">'+time+'</span>';
 		
 		if (state.timetracker.timeformat == 12) {
 			var timeConverted = timeConvert(time);
