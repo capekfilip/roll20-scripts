@@ -179,6 +179,19 @@
 
 		var hours = parseInt(args[0]),
 			minutes = parseInt(args[1]);
+		
+		if (isNaN(hours) || isNaN(minutes)) {
+			sendError('Invalid time syntax.');
+			return;
+		}
+			
+		if (hours < 10) {
+			var hours = '0'+hours;
+		}
+		
+		if (minutes < 10) {
+			var minutes = '0'+minutes;
+		}	
 			
 		var newTime = {
 			hours: hours,
@@ -209,35 +222,40 @@
 
 		var hours = parseInt(args[0]),
 			minutes = parseInt(args[1]);
-		
-		var oldTotalSeconds = (state.timetracker.hours * 3600) + (state.timetracker.minutes * 60);
-		var newTotalSeconds = (hours * 3600) + (minutes * 60);
-		
-		var newTimeSeconds = oldTotalSeconds + newTotalSeconds;
-		
-		var newDays = Math.floor(newTimeSeconds / 86400);
-		var newHours = Math.floor((newTimeSeconds % 86400) / 3600);
-		var newMinutes = Math.floor(((newTimeSeconds % 86400) % 3600) / 60);
-		
-		if (newHours < 10) {
-			var newHours = '0'+newHours;
+			
+		if (isNaN(hours) || isNaN(minutes)) {
+			doShowTime();
+			return;
+		} else {
+			var oldTotalSeconds = (state.timetracker.hours * 3600) + (state.timetracker.minutes * 60);
+			var newTotalSeconds = (hours * 3600) + (minutes * 60);
+			
+			var newTimeSeconds = oldTotalSeconds + newTotalSeconds;
+			
+			var newDays = Math.floor(newTimeSeconds / 86400);
+			var newHours = Math.floor((newTimeSeconds % 86400) / 3600);
+			var newMinutes = Math.floor(((newTimeSeconds % 86400) % 3600) / 60);
+			
+			if (newHours < 10) {
+				var newHours = '0'+newHours;
+			}
+			
+			if (newMinutes < 10) {
+				var newMinutes = '0'+newMinutes;
+			}	
+						
+			var newTime = {
+				hours: newHours,
+				minutes: newMinutes
+			};
+			
+			state.timetracker = newTime;
+			
+			var content = 'Time has been updated.';
+			
+			sendFeedback(content);
+			doShowTime();	
 		}
-		
-		if (newMinutes < 10) {
-			var newMinutes = '0'+newMinutes;
-		}	
-					
-		var newTime = {
-			hours: newHours,
-			minutes: newMinutes
-		};
-		
-		state.timetracker = newTime;
-		
-		var content = 'Time has been updated.';
-		
-		sendFeedback(content);
-		doShowTime();
 	};
 	
 	/**
