@@ -39,8 +39,8 @@
 	}; 
 	
 	/**
-	* Send feedback message
-	*/
+	 * Send feedback message
+	 */
 	var sendFeedback = function(msg) {
 		var content = '/w GM '
 				+ '<div style="position: absolute; top: 4px; left: 5px; width: 26px;">'
@@ -164,8 +164,8 @@
 	};
 	
 	/**
-	* Set the current ingame time
-	*/
+	 * Set the current ingame time
+	 */
 	var doInitTime = function(args) {
 		if (!args) 
 			{return;}
@@ -207,8 +207,8 @@
 	};
 	
 	/**
-	* Add how much time past from init
-	*/
+	 * Add how much time past from init
+	 */
 	var doPlusTime = function(args) {
 		if (!args) 
 			{return;}
@@ -261,7 +261,7 @@
 	/**
 	 * Convert time to 12-hours
 	 */
-	 var timeConvert = function(time) {
+	var timeConvert = function(time) {
 		// Check correct time format and split into components
 		time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 		
@@ -271,7 +271,7 @@
 			time[0] = +time[0] % 12 || 12; // Adjust hours
 		}
 		return time.join (''); // return adjusted time or original string
-	 };
+	};
 	 
 	/**
 	 * Set show time format
@@ -296,7 +296,7 @@
 		
 		state.timetracker.timeformat = timeformat;
 		
-		var content = 'Show format has been set to '+timeformat+'-hours time.';
+		var content = 'Time format has been set to '+timeformat+'-hours.';
 		
 		sendFeedback(content);
 	};
@@ -321,13 +321,13 @@
 	}; 
 	
 	/**
-	* Write to log if its ready
-	*/
+	 * Write to log if its ready
+	 */
 	var loadMessage = function() {
-		log('-=> TimeTracker v'+version+' is ready! Show format is set to '+state.timetracker.timeformat+'-hours time. <=-');
+		log('-=> TimeTracker v'+version+' is ready! Time format is set to '+state.timetracker.timeformat+'-hours. <=-');
 	}; 
 	
-	 /**
+	/**
 	 * Register and bind event handlers
 	 */ 
 	var registerAPI = function() {
