@@ -134,7 +134,7 @@
 			            +'This command requires 1 parameter:'
 			            +'<ul>'
 			            +'<li>'
-			            +'<b><span style="font-family: monospace;">timeformat</span></b> -- The numeric value of time format. <b>Parametr must be only 12 or 24.</b> Default value is <b>24</b>. Example <b>12</b>.'
+			            +'<b><span style="font-family: monospace;">&lt;timeformat&gt;</span></b> -- The numeric value of time format. <b>Parametr must be only 12 or 24.</b> Default value is <b>24</b>. Example <b>12</b>.'
 			            +'</li>'
 			            +'</ul>'
 		            +'</div>'
