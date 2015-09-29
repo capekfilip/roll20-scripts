@@ -227,7 +227,7 @@
 		var hours = parseInt(args[0]),
 			minutes = parseInt(args[1]);
 		
-		if (isNaN(hours) || isNaN(minutes)) {
+		if (isNaN(hours) || isNaN(minutes) || hours > 24 || minutes > 60) {
 			sendError('Invalid time syntax.');
 			return;
 		}
