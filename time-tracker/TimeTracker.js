@@ -503,7 +503,7 @@
 
 
 		if (!eventExists(name)) {
-			sendFeedback('Status "' + name + '" is not on the event list');
+			sendFeedback('Event "' + name + '" is not on the list');
 			return; 
 		}
 
@@ -524,15 +524,12 @@
 				
 				sendFeedback(content);
 				doRemoveEvent(e.name);
-				doDisplayEvents();
 			} else {
 				var newHours = Math.floor(leftTimeSeconds / 3600);
 				var newMinutes = Math.floor((leftTimeSeconds % 3600) / 60);
 				
 				e.durHours = newHours;
 				e.durMinutes = newMinutes;
-				
-				doDisplayEvents();
 			}	
 		});
 	}
