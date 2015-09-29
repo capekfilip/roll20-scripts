@@ -40,3 +40,20 @@ This command requires 3 parameters:
 
 <pre><code>!time -events</code></pre>
 This command displays the active events and it&apos;s remaining duration.
+
+## Macros
+
+Time-Set
+<pre><code>!time -set ?{hours|0}:?{minutes|0}</code></pre>
+
+Time-Plus
+<pre><code>!time -plus ?{hours|0}:?{minutes|0}</code></pre>
+
+Time-AddEvent
+<pre><code>!time -addevent ?{name}:?{hours|0}:?{minutes|0}</code></pre>
+
+Time-Show
+<pre><code>!time -show</code></pre>
+
+Time-Events
+<pre><code>!time -events</code></pre>
