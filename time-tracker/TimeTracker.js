@@ -397,11 +397,15 @@
 			sendError('Event with the name "'+name+'" already exists');
 			return; 
 		}
-
+		
+		var durTotalSeconds = (durHours * 3600) + (durMinutes * 60);
+		var newHours = Math.floor(durTotalSeconds / 3600);
+		var newMinutes = Math.floor((durTotalSeconds % 3600) / 60);
+		
 		var newEvent = {
 			name: name,
-			durHours: durHours,
-			durMinutes: durMinutes 
+			durHours: newHours,
+			durMinutes: newMinutes 
 		};
 
 		state.timetracker.events[name] = newEvent;
