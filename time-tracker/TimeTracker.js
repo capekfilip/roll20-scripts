@@ -186,7 +186,7 @@
 			            +'This command requires 3 parameters:'
 			            +'<ul>'
 			            +'<li>'
-			            +'<b><span style="font-family: monospace;">&lt;name&gt;</span></b> -- string of the event name. Example <b>PC&apos;s Mage Armor</b>.'
+			            +'<b><span style="font-family: monospace;">&lt;name&gt;</span></b> -- String of the event name. Example <b>PC&apos;s Mage Armor</b>.'
 			            +'</li> '
 			            +'<li>'
 			            +'<b><span style="font-family: monospace;">&lt;hours&gt;</span></b> -- The numeric value of how much hours duration event have. Example <b>8</b>.'
