@@ -4,7 +4,7 @@
  * @author Filip Čapek - capekfilip@capekfilip.cz
  * @version 0.3
  * @date September 28, 2015
- * @date updated September 28, 2015
+ * @date updated September 29, 2015
  */
  
  var TimeTracker = (function() {
@@ -112,87 +112,96 @@
 	 */ 
 	var showHelp = function() {
 		var content = 
-			'<div style="border: 1px solid black; background-color: white; padding: 3px 3px;">'
-            	+'<div style="font-weight: bold; border-bottom: 1px solid black;font-size: 130%;">'
+			'<div style="border: 1px solid black; background-color: #FFF; padding: 3px 3px;">'
+            	+'<div style="font-weight: bold; border-bottom: 1px solid black;font-size: 125%;">'
 					+'TimeTracker v'+version
 				+'</div>'
 				+'<div style="padding-left:10px;margin-bottom:3px;">'
-					+'<p>Tracking ingame time.</p>'
+					+'<p>Tracking ingame time and events like lamps, torches and long duration spells (Mage Armor).</p>'
 				+'</div>'
 				
 				+'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-help</i></span></b>'
+		            +'<b><span style="font-family: monospace;">!time <i>-help</i></span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 		            	+'<p>This command displays the help.</p>'
 		            +'</div>'
 				+'</div>'
 				
 				+'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-setformat</i> timeformat</span></b>'
+		            +'<b><span style="font-family: monospace;">!time <i>-setformat</i> &lt;timeformat&gt;</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 			            +'<p>Set the show time format.</p>'
 			            +'This command requires 1 parameter:'
 			            +'<ul>'
-			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">timeformat</span></b> -- The numeric value of time format. <b>Parametr must be only 12 or 24.</b> Default value is 24. Example <b>12</b>.'
-			            +'</li> '
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">timeformat</span></b> -- The numeric value of time format. <b>Parametr must be only 12 or 24.</b> Default value is <b>24</b>. Example <b>12</b>.'
+			            +'</li>'
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
 	            
 	            +'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-set</i> hours:minutes</span></b>'
+		            +'<b><span style="font-family: monospace;">!time <i>-set</i> &lt;hours&gt;:&lt;minutes&gt;</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 			            +'<p>Set the current time.</p>'
 			            +'This command requires 2 parameters:'
 			            +'<ul>'
-			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">hours:minutes</span></b> -- The numeric value of time. <b>Must be in 24-hours time format.</b> Example <b>10:30</b>.'
-			            +'</li> '
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">&lt;hours&gt;</span></b> -- The numeric value of hours. <b>Must be in 24-hours time format.</b> Example <b>10</b>.'
+			            +'</li>'
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">&lt;minutes&gt;</span></b> -- The numeric value of minutes. Example <b>30</b>.'
+			            +'</li>'
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
 	            
 	            +'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-plus</i> hours:minutes</span></b>'
+		            +'<b><span style="font-family: monospace;">!time <i>-plus</i> &lt;hours&gt;:&lt;minutes&gt;</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
-			            +'<p>Add hours and minutes to current time.</p>'
+			            +'<p>Add hours and minutes to current time. This ammount of time is even automatically deductive from events duration.</p>'
 			            +'This command requires 2 parameters:'
 			            +'<ul>'
-			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">hours:minutes</span></b> -- The numeric value of time. Example <b>1:23</b>.'
-			            +'</li> '
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">&lt;hours&gt;</span></b> -- The numeric value of how much hours add to current time. Example <b>1</b>.'
+			            +'</li>'
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">&lt;minutes&gt;</span></b> -- The numeric value of how much minutes add to current time. Example <b>28</b>.'
+			            +'</li>'
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
 	            	            
 	            +'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-show</i></span></b>'
+		            +'<b><span style="font-family: monospace;">!time <i>-show</i></span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
 		            	+'<p>This command displays the current time.</p>'
 		            +'</div>'
 				+'</div>'
 				
 				+'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-addevent</i> name:hours:minutes</span></b>'
+		            +'<b><span style="font-family: monospace;">!time <i>-addevent</i> &lt;name&gt;:&lt;hours&gt;:&lt;minutes&gt;</span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
-			            +'<p>Add hours and minutes to current time.</p>'
+			            +'<p>Add a event to list and automatically track it&apos;s duration if is used <b><span style="font-family: monospace;">!time <i>-plus</i></span></b> command.</p>'
 			            +'This command requires 3 parameters:'
 			            +'<ul>'
-			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">name</span></b> -- string of the event name. Example <b>PC Mage Armor</b>.'
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">&lt;name&gt;</span></b> -- string of the event name. Example <b>PC&apos;s Mage Armor</b>.'
 			            +'</li> '
-			            +'<li style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
-			            +'<b><span style="font-family: serif;">hours:minutes</span></b> -- The numeric value of time, how long the event will last. Example <b>8:00</b>.'
-			            +'</li> '
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">&lt;hours&gt;</span></b> -- The numeric value of how much hours duration event have. Example <b>8</b>.'
+			            +'</li>'
+			            +'<li>'
+			            +'<b><span style="font-family: monospace;">&lt;minutes&gt;</span></b> -- The numeric value of how much minutes duration event have. Example <b>0</b>.'
+			            +'</li>'
 			            +'</ul>'
 		            +'</div>'
 	            +'</div>'
 	            
 	            +'<div style="padding-left:10px;">'
-		            +'<b><span style="font-family: serif;">!time <i>-events</i></span></b>'
+		            +'<b><span style="font-family: monospace;">!time <i>-events</i></span></b>'
 		            +'<div style="padding-left: 10px;padding-right:20px">'
-		            	+'<p>This command displays the current events.</p>'
+		            	+'<p>This command displays the active events and it&apos;s remaining duration.</p>'
 		            +'</div>'
 				+'</div>'
 				
@@ -512,6 +521,7 @@
 			
 			if (leftTimeSeconds <= 0) {
 				var content = '<span style="color: red;">'+e.name+'</span> went off.';
+				
 				sendFeedback(content);
 				doRemoveEvent(e.name);
 				doDisplayEvents();
