@@ -43,8 +43,7 @@ This command displays the active events and it&apos;s remaining duration.
 
 ## Macro Query dropdown
 
-Time
-<code>!time -?{Time options|Plus Time,plus ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|Add Event,addevent ?&#123;name&#125;:?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|List of Events,events|Set Time,set ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;}</pre>
+If you wanna do all commands from single macro button with dropdown select use the code from MacroQuery file.
 
 ## Macros
 
