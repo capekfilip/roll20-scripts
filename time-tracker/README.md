@@ -44,7 +44,7 @@ This command displays the active events and it&apos;s remaining duration.
 ## Macro Query dropdown
 
 Time
-<pre><code>!time -?{Time options|Plus Time,plus ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|Add Event,addevent ?&#123;name&#125;:?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|List of Events,events|Set Time,set ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;}</code></pre>
+<code>!time -?{Time options|Plus Time,plus ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|Add Event,addevent ?&#123;name&#125;:?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|List of Events,events|Set Time,set ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;}</pre>
 
 ## Macros
 
