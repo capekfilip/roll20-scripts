@@ -29,6 +29,8 @@
 	 * Init
 	 */
 	var init = function() {
+		if (!state.timetracker)
+			{state.timetracker = {};}
 		if (!state.timetracker.time)
 			{state.timetracker.time = {};}
 		if (!state.timetracker.timeformat)
