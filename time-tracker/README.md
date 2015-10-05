@@ -41,6 +41,11 @@ This command requires 3 parameters:
 <pre><code>!time -events</code></pre>
 This command displays the active events and it&apos;s remaining duration.
 
+## Macro Query dropdown
+
+Time
+<pre><code>!time -?{Time options|Plus Time,plus ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|Add Event,addevent ?&#123;name&#125;:?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;|List of Events,events|Set Time,set ?&#123;hours&#124;0&#125;:?&#123;minutes&#124;0&#125;}</code></pre>
+
 ## Macros
 
 Time-Set
