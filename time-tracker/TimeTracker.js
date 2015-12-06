@@ -4,7 +4,10 @@
  * @author Filip Čapek - capekfilip@capekfilip.cz
  * @version 0.3
  * @date September 28, 2015
- * @date updated September 29, 2015
+ * @date updated December 6, 2015
+ *
+ * Based on TrackerJacker.js https://github.com/FGKenL/Roll20_API_Scripts/blob/master/trackerjacker.js
+ * By Ken L.
  */
  
  var TimeTracker = (function() {
