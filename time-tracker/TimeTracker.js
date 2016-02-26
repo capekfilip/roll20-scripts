@@ -10,7 +10,7 @@
  * By Ken L.
  */
  
- var TimeTracker = (function() {
+var TimeTracker = (function() {
 	'use strict'; 
 	var version = 0.3,
 	author = 'Filip Č.';
@@ -32,14 +32,18 @@
 	 * Init
 	 */
 	var init = function() {
-		if (!state.timetracker)
-			{state.timetracker = {};}
-		if (!state.timetracker.time)
-			{state.timetracker.time = {};}
-		if (!state.timetracker.timeformat)
-			{state.timetracker.timeformat = 24;}
-		if (!state.timetracker.events)
-			{state.timetracker.events = {};}
+		if (!state.timetracker) {
+			state.timetracker = {};
+		}
+		if (!state.timetracker.time) {
+			state.timetracker.time = {};
+		}
+		if (!state.timetracker.timeformat) {
+			state.timetracker.timeformat = 24;
+		}
+		if (!state.timetracker.events) {
+			state.timetracker.events = {};
+		}
 	};
 	
 	/**
@@ -66,8 +70,9 @@
 	 * Send public message
 	 */
 	var sendPublic = function(msg) {
-		if (!msg) 
-			{return undefined;}
+		if (!msg) {
+			return undefined;
+		}
 		var content = '/desc ' + msg;
 		sendChat('',content,null,(flags.archive ? {noarchive:true}:null));
 	}; 
@@ -262,8 +267,9 @@
 	 * Add how much time past from init
 	 */
 	var doPlusTime = function(args) {
-		if (!args) 
-			{return;}
+		if (!args) {
+			return;
+		}
 
 		args = args.split(/:| %% /);
 
@@ -329,8 +335,9 @@
 	 * Set show time format
 	 */
 	var doSetFormat = function(args) {
-		if (!args) 
-			{return;}
+		if (!args) {
+			return;
+		}
 
 		args = args.split(/:| %% /);
 
@@ -376,8 +383,9 @@
 	 * Add event to tracker
 	 */
 	var doAddEvent = function(args) {
-		if (!args) 
-			{return;}
+		if (!args) {
+			return;
+		}
 
 		args = args.split(/:| %% /);
 
@@ -390,8 +398,9 @@
 			durHours = parseInt(args[1]),
 			durMinutes = parseInt(args[2]);
 
-		if (typeof(name) === 'string')
-			{name = name.toLowerCase();}
+		if (typeof(name) === 'string') {
+			name = name.toLowerCase();
+		}
 
 		if (isNaN(durHours) || isNaN(durMinutes)) {
 			sendError('Invalid event syntax');
@@ -428,8 +437,9 @@
 		var found = _.find(_.keys(state.timetracker.events), function(e) {
 			return e === statusName; 
 		});
-		if (found)
-			{found = state.timetracker.events[found]; }
+		if (found) {
+			found = state.timetracker.events[found];
+		}
 		return found; 
 	};
 	
@@ -469,8 +479,9 @@
 				+'</tr>'; 
 		});
 
-		if ('' === midcontent)
-			{midcontent = 'No Events Available';}
+		if ('' === midcontent) {
+			midcontent = 'No Events Available';
+		}
 
 		content = '<div style="background-color: #FFF; border: 1px solid #000; text-align: center;">'
 			+ '<div style="font-weight: bold; font-size: 125%; border-bottom: 1px solid black;">'
@@ -495,8 +506,9 @@
 	 * Remove event from the tracker
 	 */
 	var doRemoveEvent = function(args) {
-		if (!args) 
-			{return;}
+		if (!args) {
+			return;
+		}
 
 		args = args.split(/:| %% /);
 
@@ -507,8 +519,9 @@
 
 		var name = args[0];
 
-		if (typeof(name) === 'string')
-			{name = name.toLowerCase();}
+		if (typeof(name) === 'string') {
+			name = name.toLowerCase();
+		}
 
 
 		if (!eventExists(name)) {
